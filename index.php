@@ -1,5 +1,5 @@
+“Вы находитесь на главной странице”
 <?php
-
-//require_once 'app/autoload.php';
-
-
+$dir = "app/task_1"; // путь к папке с файлами
+foreach (glob($dir. "/*.php") as $filename) {
+	require_once $filename;}
