@@ -100,7 +100,7 @@ function randGender()
 
 function randName($gend)
 {
-	global  $allData;
+	global $allData;
 	$name = '';
 	if ($gend == 'male')
 	{
@@ -113,7 +113,6 @@ function randName($gend)
 		$name = $allData['gender']['female'][$countGender];
 	}
 	return $name;
-
 }
 
 function randLastName($gend)
@@ -132,12 +131,12 @@ function randLastName($gend)
 	return $lastName;
 }
 
-function generateMail($name,$lastName)
+function generateMail($name, $lastName)
 {
 	global $allData;
 	$countDom = rand(0, (count($allData['domains']) - 1));
-	$nameLAT=toLat($name);
-	$nameLAstLAT=toLat($lastName);
+	$nameLAT = toLat($name);
+	$nameLAstLAT = toLat($lastName);
 	$domain = $allData['domains'][$countDom];
 	return strtolower($nameLAT[0] . $nameLAstLAT . '@' . $domain);
 }
@@ -147,6 +146,39 @@ function birthday($max, $min = 0)
 	$strtotime = strtotime($max);
 	$randTime = rand(0, $strtotime);
 	return date('d.m.Y', $randTime);
+}
+
+function position($randPosition_id)
+{
+	global $allData;
+	$positionArr = [];
+	foreach ($allData['position_id'] as $key => $pos)
+	{
+		array_push($positionArr, $pos['position']);
+	}
+	$position = $positionArr[array_rand($positionArr)];
+
+	return $position;
+}
+
+/**
+ * @return salaryCalc ЗП сотрудника = 'fixed_part' + 'bonuses' - налог 13%
+ */
+function salaryCalc($position, $randPosition_id) : float
+{
+	global $allData;
+	$fixedPart = $allData['position_id'][$randPosition_id]['salary']['fixed_part'];
+	$bonusesRand = array_rand($allData['position_id'][$randPosition_id]['salary']['bonuses']);
+	$bonuses = $allData['position_id'][$randPosition_id]['salary']['bonuses'][$bonusesRand];
+	$salary = $fixedPart + $bonuses - ($fixedPart + $bonuses) * 0.13;
+	return round($salary, 2);
+}
+
+date_default_timezone_set('UTC');
+function calculateAge($birthday, $data)
+{
+	$age = $data - substr($birthday, -4);
+	return $age;
 }
 
 function createUsers($size)
@@ -162,22 +194,30 @@ function createUsers($size)
 		'birthday' => '',
 		'position_id' => '',
 		'position' => '',
-		'alary' => '',
+		'salary' => '',
 		'age' => '',
 	];
 	$main['id'] = getId();
 	$randGender = randGender();
 	$main['gender'] = $randGender;
-	$main['name']= randName($randGender);
+	$main['name'] = randName($randGender);
 	$main['last_name'] = randLastName($randGender);
 	$main['birthday'] = birthday('1.1.2000');
-	$main['mail'] = generateMail($main['name'],$main['last_name']);
+	$main['mail'] = generateMail($main['name'], $main['last_name']);
+	$randPosition_id = array_rand($allData['position_id']);
+	$main['position_id'] = $randPosition_id;
+	$main['position'] = position($randPosition_id);
+	$main['salary'] = salaryCalc($main['position'], $randPosition_id);
+
+	$main['age'] = calculateAge($main['birthday'], date('Y'));
 	echo "<pre>";
 	$mainEx = array_slice($main, 0, $size);
-	print_r($mainEx);
-	echo "</br>";
+	return $mainEx;
 }
-createUsers(14);
+
+echo "<pre>";
+print_r(createUsers(14));
+echo "</br>";
 
 
 
