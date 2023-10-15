@@ -7,14 +7,12 @@ require_once '6_data.php';
 /**
  * @return ID
  */
-function getId()
+$id = 0;
+$getId = function(&$id)
 {
-	static $id = 0;
 	$id++;
 	return $id;
-}
-
-;
+};
 
 /**
  * @return переводит символы с кириллицы на латиницу
@@ -184,6 +182,8 @@ function calculateAge($birthday, $data)
 function createUsers($size)
 {
 	global $allData;
+	global $id;
+	global $getId;
 
 	$main = [
 		'id' => '',
@@ -197,7 +197,7 @@ function createUsers($size)
 		'salary' => '',
 		'age' => '',
 	];
-	$main['id'] = getId();
+	$main['id'] = $getId($id);
 	$randGender = randGender();
 	$main['gender'] = $randGender;
 	$main['name'] = randName($randGender);
@@ -216,8 +216,30 @@ function createUsers($size)
 }
 
 echo "<pre>";
-print_r(createUsers(14));
 echo "</br>";
+$arr1 = [];
+$user1 = createUsers(14);
+$user2 = createUsers(13);
+$user3 = createUsers(10);
+array_push($arr1, $user1, $user2, $user3);
+
+function compareByAge($a, $b)
+{
+	return $a['age'] - $b['age'];
+}
+
+usort($arr1, 'compareByAge');
+
+function compareByLastName($a, $b)
+{
+	return $a['lastName'] - $b['lastName'];
+}
+
+usort($arr1, 'compareByAge');
+
+print_r($arr1);
+
+
 
 
 
