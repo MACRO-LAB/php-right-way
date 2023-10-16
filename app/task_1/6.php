@@ -1,5 +1,63 @@
 <?php
-require_once '6_data.php';
+//require_once '6_data.php';
+$allData = [
+	'id' => [],
+	'gender' => [
+		'male' => ['Александр', 'Фёдор', 'Савелий', 'Максим', 'Виктор', 'Кирилл'],
+		'female' => ['Мария', 'Анна', 'Александра', 'Юлия'],
+	],
+	'lastName' => [
+		'Иванов',
+		'Дегтярев',
+		'Жиленков',
+		'Тимофеев',
+		'Турин',
+		'Комаров',
+		'Панищев',
+	],
+	'domains' => ['gmail.com', 'yandex.ru', 'mail.ru'],
+	'position_id' => [
+		0 => [
+			'position' => 'junior',
+			'salary' => [
+				'fixed_part' => 50000,
+				'bonuses' => [
+					0 => 5000,
+					1 => 3000,
+					2 => 550,
+					3 => 450,
+				],
+			],
+		],
+		1 => [
+			'position' => 'middle',
+			'salary' => [
+				'fixed_part' => 70000,
+				'bonuses' => [
+					0 => 8000,
+					1 => 5000,
+					2 => 750,
+					3 => 1650,
+					4 => 1000,
+				],
+			],
+		],
+		2 => [
+			'position' => 'senior',
+			'salary' => [
+				'fixed_part' => 90000,
+				'bonuses' => [
+					0 => 10000,
+					1 => 1000,
+					2 => 500,
+					3 => 2000,
+					4 => 1500,
+					5 => 6000,
+				],
+			],
+		],
+	],
+];
 /**
  * @var array $allData
  */
@@ -178,6 +236,21 @@ function calculateAge($birthday, $data)
 	$age = $data - substr($birthday, -4);
 	return $age;
 }
+/**
+sort age
+ */
+function sortArrayAge($a, $b)
+{
+	return $a['age']-$b['age'];
+}
+
+/**
+sort lastname
+ */
+function sortArrayLastName($a, $b) {
+
+	return strcmp($a['last_name'], $b['last_name']);
+}
 
 function createUsers($size)
 {
@@ -221,29 +294,34 @@ $arr1 = [];
 $user1 = createUsers(14);
 $user2 = createUsers(13);
 $user3 = createUsers(10);
-array_push($arr1, $user1, $user2, $user3);
-/**
-sort age
- */
-function sortArrayAge($a, $b)
+$user4 = createUsers(10);
+$user5 = createUsers(10);
+array_push($arr1, $user1, $user2, $user3, $user4, $user5);
+
+
+//usort($arr1, 'sortArrayAge');
+//echo 'sort age';
+//print_r($arr1);
+//
+//usort($arr1, 'sortArrayLastName');
+//echo 'sort lastname';
+//print_r($arr1);
+
+
+function filterArr($a,$b)
 {
-	return $a['age'] - $b['age'];
+	//	return strlen($a['last_name'])-strlen($b['last_name']);
+	$x = strcmp($a['last_name'],$b['last_name']);
+	if ($x ==1)
+	{
+		return $a['last_name'];
+	}
 }
-usort($arr1, 'sortArrayAge');
-echo 'sort age';
-print_r($arr1);
 
-/**
-sort lastname
- */
-function sortArrayLastName($a, $b) {
+$x = array_filter($arr1,'filterArr');
+print_r($x);
 
-		return strcmp($a['last_name'], $b['last_name']);
-}
-usort($arr1, 'sortArrayLastName');
 
-echo 'sort lastname';
-print_r($arr1);
 
 
 
