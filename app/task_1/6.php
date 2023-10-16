@@ -222,22 +222,30 @@ $user1 = createUsers(14);
 $user2 = createUsers(13);
 $user3 = createUsers(10);
 array_push($arr1, $user1, $user2, $user3);
-
-function compareByAge($a, $b)
+/**
+sort age
+ */
+function sortArrayAge($a, $b)
 {
 	return $a['age'] - $b['age'];
 }
-
-usort($arr1, 'compareByAge');
-
-function compareByLastName($a, $b)
-{
-	return $a['lastName'] - $b['lastName'];
-}
-
-usort($arr1, 'compareByAge');
-
+usort($arr1, 'sortArrayAge');
+echo 'sort age';
 print_r($arr1);
+
+/**
+sort lastname
+ */
+function sortArrayLastName($a, $b) {
+
+		return strcmp($a['last_name'], $b['last_name']);
+}
+usort($arr1, 'sortArrayLastName');
+
+echo 'sort lastname';
+print_r($arr1);
+
+
 
 
 
