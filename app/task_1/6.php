@@ -299,27 +299,27 @@ $user5 = createUsers(10);
 array_push($arr1, $user1, $user2, $user3, $user4, $user5);
 
 
-//usort($arr1, 'sortArrayAge');
-//echo 'sort age';
-//print_r($arr1);
+usort($arr1, 'sortArrayAge');
+echo 'sort age';
+print_r($arr1);
+
+usort($arr1, 'sortArrayLastName');
+echo 'sort lastname';
+print_r($arr1);
+
+
+//function filterArr($a,$b)
+//{
+//	//	return strlen($a['last_name'])-strlen($b['last_name']);
+//	$x = strcmp($a['last_name'],$b['last_name']);
+//	if ($x ==1)
+//	{
+//		return $a['last_name'];
+//	}
+//}
 //
-//usort($arr1, 'sortArrayLastName');
-//echo 'sort lastname';
-//print_r($arr1);
-
-
-function filterArr($a,$b)
-{
-	//	return strlen($a['last_name'])-strlen($b['last_name']);
-	$x = strcmp($a['last_name'],$b['last_name']);
-	if ($x ==1)
-	{
-		return $a['last_name'];
-	}
-}
-
-$x = array_filter($arr1,'filterArr');
-print_r($x);
+//$x = array_filter($arr1,'filterArr');
+//print_r($x);
 
 
 
