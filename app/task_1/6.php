@@ -1,5 +1,6 @@
 <?php
 require_once 'data/6_data.php';
+echo '</br>' . '_____________6 задание' . '</br>';
 
 /**
  * @var array $allData
@@ -236,51 +237,36 @@ function createUsers($size){
 }
 echo "<pre>";
 echo "</br>";
-$users = createUsers(20);
+$users = createUsers(5);
 
 //сортировка по возрасту
-//usort($users, 'sortArrayAge');
-//echo 'sort age';
-//print_r($users);
+usort($users, 'sortArrayAge');
+echo 'sort age';
+print_r($users);
 
 //сортировка по фамилии
-//usort($users, 'sortArrayLastName');
-//echo 'sort lastname';
-//print_r($users);
+usort($users, 'sortArrayLastName');
+echo 'sort lastname';
+print_r($users);
 
 //фильтр по фамилии
-function filterLastName($users){
-//	$similarLastNames = [];
-	foreach ($users as $key=>$user){
-		foreach ($users as $keyNext=>$userNext){
-			similar_text($user['last_name'], $userNext['last_name'], $perc);
-			if ($perc<100 && $perc>80){
-//				echo $perc . ' '.$user['last_name']  . ' равно '. $userNext['last_name'].'</br>';
-//				array_push($similarLastNames,$user,$userNext);
-				return true;
-			}
+
+function filterLastName($user)
+{
+	global $users;
+	foreach ($users as $keyNext => $userNext)
+	{
+		similar_text($user['last_name'], $userNext['last_name'], $perc);
+		if ($perc < 99 && $perc > 80)
+		{
+			return true;
 		}
-	}return  false;
-};
-$uuu= filterLastName($users);
-var_dump($uuu);
-$xxxx= array_filter($users, filterLastName($users));
-print_r($xxxx);
-
-//$xxx= array_filter($users,function ($us){
-//	foreach ($us['last_name'] as $user){
-//		foreach ($us['last_name'] as $userNext){
-//			similar_text($user, $userNext, $perc);
-//			if ($perc<100 && $perc>80){
-//				return true;
-//			}
-//		}
-//	}return  false;
-//});
-//print_r($xxx);
-
-
-
+	}
+	return false;
+}
+$filtrLastName= array_filter($users,'filterLastName');
+echo 'FILTR lastname';
+print_r($filtrLastName);
 
 
 
