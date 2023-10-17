@@ -262,19 +262,24 @@ function filterLastName($users){
 		}
 	}return  false;
 };
-$xxx= array_filter($users,function ($us){
-	foreach ($us['last_name'] as $user){
-		foreach ($us['last_name'] as $userNext){
-			similar_text($user, $userNext, $perc);
-			if ($perc<100 && $perc>80){
-				return true;
-			}
-		}
-	}return  false;
-},);
-print_r($users);
-//$uuu= filterLastName($users);
-//var_dump($uuu);
+$uuu= filterLastName($users);
+var_dump($uuu);
+$xxxx= array_filter($users, filterLastName($users));
+$uuu= filterLastName($users);
+print_r($xxxx);
+
+//$xxx= array_filter($users,function ($us){
+//	foreach ($us['last_name'] as $user){
+//		foreach ($us['last_name'] as $userNext){
+//			similar_text($user, $userNext, $perc);
+//			if ($perc<100 && $perc>80){
+//				return true;
+//			}
+//		}
+//	}return  false;
+//});
+//print_r($xxx);
+
 
 
 
