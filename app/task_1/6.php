@@ -265,7 +265,6 @@ function filterLastName($users){
 $uuu= filterLastName($users);
 var_dump($uuu);
 $xxxx= array_filter($users, filterLastName($users));
-$uuu= filterLastName($users);
 print_r($xxxx);
 
 //$xxx= array_filter($users,function ($us){
