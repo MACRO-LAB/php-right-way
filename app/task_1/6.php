@@ -1,63 +1,6 @@
 <?php
-//require_once '6_data.php';
-$allData = [
-	'id' => [],
-	'gender' => [
-		'male' => ['Александр', 'Фёдор', 'Савелий', 'Максим', 'Виктор', 'Кирилл'],
-		'female' => ['Мария', 'Анна', 'Александра', 'Юлия'],
-	],
-	'lastName' => [
-		'Иванов',
-		'Дегтярев',
-		'Жиленков',
-		'Тимофеев',
-		'Турин',
-		'Комаров',
-		'Панищев',
-	],
-	'domains' => ['gmail.com', 'yandex.ru', 'mail.ru'],
-	'position_id' => [
-		0 => [
-			'position' => 'junior',
-			'salary' => [
-				'fixed_part' => 50000,
-				'bonuses' => [
-					0 => 5000,
-					1 => 3000,
-					2 => 550,
-					3 => 450,
-				],
-			],
-		],
-		1 => [
-			'position' => 'middle',
-			'salary' => [
-				'fixed_part' => 70000,
-				'bonuses' => [
-					0 => 8000,
-					1 => 5000,
-					2 => 750,
-					3 => 1650,
-					4 => 1000,
-				],
-			],
-		],
-		2 => [
-			'position' => 'senior',
-			'salary' => [
-				'fixed_part' => 90000,
-				'bonuses' => [
-					0 => 10000,
-					1 => 1000,
-					2 => 500,
-					3 => 2000,
-					4 => 1500,
-					5 => 6000,
-				],
-			],
-		],
-	],
-];
+require_once 'data/6_data.php';
+
 /**
  * @var array $allData
  */
@@ -252,7 +195,7 @@ function sortArrayLastName($a, $b) {
 	return strcmp($a['last_name'], $b['last_name']);
 }
 
-function createUsers($size)
+function generateUsers()
 {
 	global $allData;
 	global $id;
@@ -281,47 +224,57 @@ function createUsers($size)
 	$main['position_id'] = $randPosition_id;
 	$main['position'] = position($randPosition_id);
 	$main['salary'] = salaryCalc($main['position'], $randPosition_id);
-
 	$main['age'] = calculateAge($main['birthday'], date('Y'));
-	echo "<pre>";
-	$mainEx = array_slice($main, 0, $size);
-	return $mainEx;
+	return $main;
 }
-
+function createUsers($size){
+		$arr = [];
+		for ($i = 0; $i < $size; $i++){
+			array_push($arr, generateUsers());
+		}
+		return $arr;
+}
 echo "<pre>";
 echo "</br>";
-$arr1 = [];
-$user1 = createUsers(14);
-$user2 = createUsers(13);
-$user3 = createUsers(10);
-$user4 = createUsers(10);
-$user5 = createUsers(10);
-array_push($arr1, $user1, $user2, $user3, $user4, $user5);
+$users = createUsers(20);
 
+//сортировка по возрасту
+//usort($users, 'sortArrayAge');
+//echo 'sort age';
+//print_r($users);
 
-usort($arr1, 'sortArrayAge');
-echo 'sort age';
-print_r($arr1);
+//сортировка по фамилии
+//usort($users, 'sortArrayLastName');
+//echo 'sort lastname';
+//print_r($users);
 
-usort($arr1, 'sortArrayLastName');
-echo 'sort lastname';
-print_r($arr1);
-
-
-//function filterArr($a,$b)
-//{
-//	//	return strlen($a['last_name'])-strlen($b['last_name']);
-//	$x = strcmp($a['last_name'],$b['last_name']);
-//	if ($x ==1)
-//	{
-//		return $a['last_name'];
-//	}
-//}
-//
-//$x = array_filter($arr1,'filterArr');
-//print_r($x);
-
-
+//фильтр по фамилии
+function filterLastName($users){
+//	$similarLastNames = [];
+	foreach ($users as $key=>$user){
+		foreach ($users as $keyNext=>$userNext){
+			similar_text($user['last_name'], $userNext['last_name'], $perc);
+			if ($perc<100 && $perc>80){
+//				echo $perc . ' '.$user['last_name']  . ' равно '. $userNext['last_name'].'</br>';
+//				array_push($similarLastNames,$user,$userNext);
+				return true;
+			}
+		}
+	}return  false;
+};
+$xxx= array_filter($users,function ($us){
+	foreach ($us['last_name'] as $user){
+		foreach ($us['last_name'] as $userNext){
+			similar_text($user, $userNext, $perc);
+			if ($perc<100 && $perc>80){
+				return true;
+			}
+		}
+	}return  false;
+},);
+print_r($users);
+//$uuu= filterLastName($users);
+//var_dump($uuu);
 
 
 
